@@ -35,6 +35,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: passwordController,
               ),
             ),
+            const SizedBox(height: 50),
+            ElevatedButton(
+              child: const Text("Login"),
+              onPressed: () {
+                if (usernameController.text == "abed" &&
+                    passwordController.text == "123") {
+                  //TODO go to main Screen
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Wrong username or password"),
+                    ),
+                  );
+                }
+              },
+            )
           ],
         ),
       ),
