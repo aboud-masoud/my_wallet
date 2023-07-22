@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_wallet/home.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -41,7 +42,10 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: () {
                 if (usernameController.text == "abed" &&
                     passwordController.text == "123") {
-                  //TODO go to main Screen
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: ((context) => const HomeScreen())),
+                      (route) => false);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
