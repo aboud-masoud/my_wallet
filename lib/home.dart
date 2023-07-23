@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:my_wallet/models/amount_model.dart';
 import 'package:my_wallet/small_widgets/add_edit_record.dart';
 import 'package:my_wallet/small_widgets/header_view.dart';
@@ -13,6 +14,27 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<AmountModel> myList = [];
+
+  final myBox = Hive.box("wallet");
+
+  @override
+  void initState() {
+    getDataFromHive();
+    super.initState();
+  }
+
+  getDataFromHive() {
+    final data = myBox.keys.map((key) {
+      final value = myBox.get(key);
+      return AmountModel(
+          desc: value["desc"],
+          amount: value["amount"],
+          type: value["type"] == "income" ? TransType.income : TransType.outcome);
+    }).toList();
+
+    myList = data;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +63,17 @@ class _HomeScreenState extends State<HomeScreen> {
                             context: context,
                             builder: (context) {
                               return AddEditRecord(
-                                onAdd: (value) {
+                                onAdd: (value) async {
                                   if (value.amount > 0 && value.desc.isNotEmpty) {
-                                    myList.add(value);
-                                    setState(() {});
+                                    // myList[index] = value;
+                                    // setState(() {});
+
+                                    await myBox.putAt(index, {
+                                      "type": value.type == TransType.income ? "income" : "outcome",
+                                      "desc": value.desc,
+                                      "amount": value.amount
+                                    });
+                                    getDataFromHive();
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
@@ -60,8 +89,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             });
                       },
                       onDelete: () {
-                        myList.removeAt(index);
-                        setState(() {});
+                        // myList.removeAt(index);
+                        // setState(() {});
+
+                        myBox.deleteAt(index);
+                        getDataFromHive();
                       },
                     );
                   }),
@@ -74,10 +106,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   context: context,
                   builder: (context) {
                     return AddEditRecord(
-                      onAdd: (value) {
+                      onAdd: (value) async {
                         if (value.amount > 0 && value.desc.isNotEmpty) {
-                          myList.add(value);
-                          setState(() {});
+                          // myList.add(value);
+                          // setState(() {});
+
+                          await myBox.add({
+                            "type": value.type == TransType.income ? "income" : "outcome",
+                            "desc": value.desc,
+                            "amount": value.amount
+                          });
+
+                          getDataFromHive();
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
