@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_wallet/models/amount_model.dart';
+import 'package:my_wallet/small_widgets/add_new_record.dart';
 import 'package:my_wallet/small_widgets/header_view.dart';
 import 'package:my_wallet/small_widgets/list_cell.dart';
 
@@ -34,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Flexible(
               child: ListView.builder(
+                  reverse: true,
                   itemCount: myList.length,
                   itemBuilder: (ctx, index) {
                     return ListCell(
@@ -49,8 +51,28 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-        floatingActionButton:
-            ElevatedButton(onPressed: () {}, child: const Icon(Icons.add)));
+        floatingActionButton: ElevatedButton(
+            onPressed: () {
+              showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return AddNewRecord(
+                      onAdd: (value) {
+                        if (value.amount > 0 && value.desc.isNotEmpty) {
+                          myList.add(value);
+                          setState(() {});
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Amount should be more than Zereooo and Desc should be filled"),
+                            ),
+                          );
+                        }
+                      },
+                    );
+                  });
+            },
+            child: const Icon(Icons.add)));
   }
 
   double calculateTotalAmount() {

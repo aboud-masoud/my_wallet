@@ -15,47 +15,46 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            Image.asset(
-              "assets/logo.png",
-              height: 200,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16),
-              child: TextField(
-                decoration: const InputDecoration(hintText: "username"),
-                controller: usernameController,
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            children: [
+              Image.asset(
+                "assets/logo.png",
+                height: 200,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16),
-              child: TextField(
-                decoration: const InputDecoration(hintText: "password"),
-                controller: passwordController,
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16),
+                child: TextField(
+                  decoration: const InputDecoration(hintText: "username"),
+                  controller: usernameController,
+                ),
               ),
-            ),
-            const SizedBox(height: 50),
-            ElevatedButton(
-              child: const Text("Login"),
-              onPressed: () {
-                if (usernameController.text == "abed" &&
-                    passwordController.text == "123") {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: ((context) => const HomeScreen())),
-                      (route) => false);
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Wrong username or password"),
-                    ),
-                  );
-                }
-              },
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16),
+                child: TextField(
+                  decoration: const InputDecoration(hintText: "password"),
+                  controller: passwordController,
+                ),
+              ),
+              const SizedBox(height: 50),
+              ElevatedButton(
+                child: const Text("Login"),
+                onPressed: () {
+                  if (usernameController.text == "abed" && passwordController.text == "123") {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: ((context) => const HomeScreen())), (route) => false);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Wrong username or password"),
+                      ),
+                    );
+                  }
+                },
+              )
+            ],
+          ),
         ),
       ),
     );
