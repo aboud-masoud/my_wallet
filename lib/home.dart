@@ -61,6 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       onEdit: () {
                         showModalBottomSheet(
                             context: context,
+                            isScrollControlled: true,
                             builder: (context) {
                               return AddEditRecord(
                                 onAdd: (value) async {
@@ -98,12 +99,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   }),
             ),
+            const SizedBox(height: 40)
           ],
         ),
         floatingActionButton: ElevatedButton(
             onPressed: () {
               showModalBottomSheet(
                   context: context,
+                  isScrollControlled: true,
                   builder: (context) {
                     return AddEditRecord(
                       onAdd: (value) async {
