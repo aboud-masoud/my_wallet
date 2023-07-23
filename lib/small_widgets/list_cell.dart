@@ -6,6 +6,7 @@ class ListCell extends StatelessWidget {
   final TransType type;
   final String desc;
   final double amount;
+  final VoidCallback onEdit;
   final VoidCallback onDelete;
 
   const ListCell(
@@ -13,15 +14,15 @@ class ListCell extends StatelessWidget {
       required this.type,
       required this.desc,
       required this.amount,
-      required this.onDelete});
+      required this.onDelete,
+      required this.onEdit});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        decoration: BoxDecoration(
-            color: Colors.black26, borderRadius: BorderRadius.circular(10)),
+        decoration: BoxDecoration(color: Colors.black26, borderRadius: BorderRadius.circular(10)),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
@@ -32,20 +33,14 @@ class ListCell extends StatelessWidget {
                   Row(
                     children: [
                       Icon(
-                        type == TransType.income
-                            ? Icons.arrow_downward
-                            : Icons.arrow_upward,
+                        type == TransType.income ? Icons.arrow_downward : Icons.arrow_upward,
                         size: 12,
-                        color: type == TransType.income
-                            ? Colors.green
-                            : Colors.red,
+                        color: type == TransType.income ? Colors.green : Colors.red,
                       ),
                       Text(
                         type == TransType.income ? "Income" : "Outcome",
                         style: TextStyle(
-                            color: type == TransType.income
-                                ? Colors.green
-                                : Colors.red,
+                            color: type == TransType.income ? Colors.green : Colors.red,
                             fontSize: 12,
                             fontWeight: FontWeight.bold),
                       ),
@@ -53,20 +48,18 @@ class ListCell extends StatelessWidget {
                   ),
                   Text(
                     desc,
-                    style: const TextStyle(
-                        color: Color(0xff444444), fontWeight: FontWeight.bold),
+                    style: const TextStyle(color: Color(0xff444444), fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
               Expanded(child: Container()),
               Text(
                 type == TransType.income ? "+$amount JD" : "-$amount JD",
-                style: TextStyle(
-                    color: type == TransType.income ? Colors.green : Colors.red,
-                    fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(color: type == TransType.income ? Colors.green : Colors.red, fontWeight: FontWeight.bold),
               ),
-              IconButton(
-                  onPressed: () => onDelete(), icon: const Icon(Icons.delete))
+              IconButton(onPressed: () => onEdit(), icon: const Icon(Icons.edit)),
+              IconButton(onPressed: () => onDelete(), icon: const Icon(Icons.delete))
             ],
           ),
         ),

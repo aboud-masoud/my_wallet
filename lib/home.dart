@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_wallet/models/amount_model.dart';
-import 'package:my_wallet/small_widgets/add_new_record.dart';
+import 'package:my_wallet/small_widgets/add_edit_record.dart';
 import 'package:my_wallet/small_widgets/header_view.dart';
 import 'package:my_wallet/small_widgets/list_cell.dart';
 
@@ -12,13 +12,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<AmountModel> myList = [
-    AmountModel(type: TransType.income, desc: "shogool 1", amount: 300),
-    AmountModel(type: TransType.outcome, desc: "ajaar al beet", amount: 200),
-    AmountModel(type: TransType.outcome, desc: "banzeeen", amount: 25),
-    AmountModel(type: TransType.outcome, desc: "telphone", amount: 12.5),
-    AmountModel(type: TransType.income, desc: "freelance", amount: 600)
-  ];
+  List<AmountModel> myList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +36,29 @@ class _HomeScreenState extends State<HomeScreen> {
                       type: myList[index].type,
                       desc: myList[index].desc,
                       amount: myList[index].amount,
+                      onEdit: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return AddEditRecord(
+                                onAdd: (value) {
+                                  if (value.amount > 0 && value.desc.isNotEmpty) {
+                                    myList.add(value);
+                                    setState(() {});
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text("Amount should be more than Zereooo and Desc should be filled"),
+                                      ),
+                                    );
+                                  }
+                                },
+                                amount: myList[index].amount,
+                                desc: myList[index].desc,
+                                type: myList[index].type,
+                              );
+                            });
+                      },
                       onDelete: () {
                         myList.removeAt(index);
                         setState(() {});
@@ -56,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
               showModalBottomSheet(
                   context: context,
                   builder: (context) {
-                    return AddNewRecord(
+                    return AddEditRecord(
                       onAdd: (value) {
                         if (value.amount > 0 && value.desc.isNotEmpty) {
                           myList.add(value);

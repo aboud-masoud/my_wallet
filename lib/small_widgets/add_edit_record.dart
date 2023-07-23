@@ -3,18 +3,36 @@ import 'package:flutter/services.dart';
 import 'package:my_wallet/models/amount_model.dart';
 import 'package:my_wallet/small_widgets/list_cell.dart';
 
-class AddNewRecord extends StatefulWidget {
+class AddEditRecord extends StatefulWidget {
+  final double? amount;
+  final String? desc;
+  final TransType? type;
+
   final Function(AmountModel) onAdd;
-  const AddNewRecord({super.key, required this.onAdd});
+  const AddEditRecord({
+    super.key,
+    required this.onAdd,
+    this.amount,
+    this.desc,
+    this.type,
+  });
 
   @override
-  State<AddNewRecord> createState() => _AddNewRecordState();
+  State<AddEditRecord> createState() => _AddEditRecordState();
 }
 
-class _AddNewRecordState extends State<AddNewRecord> {
+class _AddEditRecordState extends State<AddEditRecord> {
   bool incomingSelected = true;
   TextEditingController amountController = TextEditingController();
   TextEditingController descController = TextEditingController();
+
+  @override
+  void initState() {
+    amountController.text = widget.amount != null ? "${widget.amount}" : "";
+    descController.text = widget.desc ?? "";
+    incomingSelected = widget.type == TransType.income;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +49,7 @@ class _AddNewRecordState extends State<AddNewRecord> {
                   },
                   child: const Text("Cancel")),
               Expanded(child: Container()),
-              const Text("Add New Record"),
+              Text(widget.amount != null ? "Edit Record" : "Add New Record"),
               Expanded(child: Container()),
               TextButton(
                   onPressed: () {
@@ -41,7 +59,7 @@ class _AddNewRecordState extends State<AddNewRecord> {
                         type: incomingSelected ? TransType.income : TransType.outcome));
                     Navigator.pop(context);
                   },
-                  child: const Text("Add")),
+                  child: Text(widget.amount != null ? "Edit" : "Add")),
             ],
           ),
           const SizedBox(height: 10),
