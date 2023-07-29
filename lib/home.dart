@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+// import 'package:hive_flutter/hive_flutter.dart';
 import 'package:my_wallet/models/amount_model.dart';
 import 'package:my_wallet/small_widgets/add_edit_record.dart';
 import 'package:my_wallet/small_widgets/header_view.dart';
@@ -15,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<AmountModel> myList = [];
 
-  final myBox = Hive.box("wallet");
+  // final myBox = Hive.box("wallet");
 
   @override
   void initState() {
@@ -24,15 +24,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   getDataFromHive() {
-    final data = myBox.keys.map((key) {
-      final value = myBox.get(key);
-      return AmountModel(
-          desc: value["desc"],
-          amount: value["amount"],
-          type: value["type"] == "income" ? TransType.income : TransType.outcome);
-    }).toList();
+    // final data = myBox.keys.map((key) {
+    //   final value = myBox.get(key);
+    //   return AmountModel(
+    //       desc: value["desc"],
+    //       amount: value["amount"],
+    //       type:
+    //           value["type"] == "income" ? TransType.income : TransType.outcome);
+    // }).toList();
 
-    myList = data;
+    // myList = data;
     setState(() {});
   }
 
@@ -65,20 +66,24 @@ class _HomeScreenState extends State<HomeScreen> {
                             builder: (context) {
                               return AddEditRecord(
                                 onAdd: (value) async {
-                                  if (value.amount > 0 && value.desc.isNotEmpty) {
+                                  if (value.amount > 0 &&
+                                      value.desc.isNotEmpty) {
                                     // myList[index] = value;
                                     // setState(() {});
 
-                                    await myBox.putAt(index, {
-                                      "type": value.type == TransType.income ? "income" : "outcome",
-                                      "desc": value.desc,
-                                      "amount": value.amount
-                                    });
+                                    // await myBox.putAt(index, {
+                                    //   "type": value.type == TransType.income
+                                    //       ? "income"
+                                    //       : "outcome",
+                                    //   "desc": value.desc,
+                                    //   "amount": value.amount
+                                    // });
                                     getDataFromHive();
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
-                                        content: Text("Amount should be more than Zereooo and Desc should be filled"),
+                                        content: Text(
+                                            "Amount should be more than Zereooo and Desc should be filled"),
                                       ),
                                     );
                                   }
@@ -93,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         // myList.removeAt(index);
                         // setState(() {});
 
-                        myBox.deleteAt(index);
+                        // myBox.deleteAt(index);
                         getDataFromHive();
                       },
                     );
@@ -114,17 +119,20 @@ class _HomeScreenState extends State<HomeScreen> {
                           // myList.add(value);
                           // setState(() {});
 
-                          await myBox.add({
-                            "type": value.type == TransType.income ? "income" : "outcome",
-                            "desc": value.desc,
-                            "amount": value.amount
-                          });
+                          // await myBox.add({
+                          //   "type": value.type == TransType.income
+                          //       ? "income"
+                          //       : "outcome",
+                          //   "desc": value.desc,
+                          //   "amount": value.amount
+                          // });
 
                           getDataFromHive();
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text("Amount should be more than Zereooo and Desc should be filled"),
+                              content: Text(
+                                  "Amount should be more than Zereooo and Desc should be filled"),
                             ),
                           );
                         }
