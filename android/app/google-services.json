@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1060544699931",
+    "project_id": "my-wallet-dde6a",
+    "storage_bucket": "my-wallet-dde6a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1060544699931:android:b75231f0518c6615c362be",
+        "android_client_info": {
+          "package_name": "com.example.my_wallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1060544699931-5u50th7okoq7sufbuf5vogdcqi8uifja.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJI5GOwnoYDMai-XbVI1aBqYe1F8ua570"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1060544699931-5u50th7okoq7sufbuf5vogdcqi8uifja.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
