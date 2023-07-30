@@ -68,16 +68,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ))),
                         (route) => false);
                   }
-                  // if (usernameController.text == "abed" && passwordController.text == "123") {
-                  //   Navigator.of(context).pushAndRemoveUntil(
-                  //       MaterialPageRoute(builder: ((context) => const HomeScreen())), (route) => false);
-                  // } else {
-                  //   ScaffoldMessenger.of(context).showSnackBar(
-                  //     const SnackBar(
-                  //       content: Text("Wrong username or password"),
-                  //     ),
-                  //   );
-                  // }
                 },
               ),
               const SizedBox(height: 20),

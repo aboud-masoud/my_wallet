@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-// import 'package:hive_flutter/hive_flutter.dart';
-// import 'package:my_wallet/models/amount_model.dart';
+
 import 'package:my_wallet/small_widgets/add_edit_record.dart';
 import 'package:my_wallet/small_widgets/header_view.dart';
 import 'package:my_wallet/small_widgets/list_cell.dart';
@@ -15,45 +14,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // List<AmountModel> myList = [];
-
-  // final myBox = Hive.box("wallet");
   late CollectionReference<Map<String, dynamic>> walletDB;
 
   @override
   void initState() {
-    // getDataFromHive();
     walletDB = FirebaseFirestore.instance.collection(widget.email);
     super.initState();
   }
-
-  // getDataFromHive() async {
-  //   final data = await walletDB.doc().get().then(
-  //     (DocumentSnapshot doc) {
-  //       final value = doc.data() as Map<String, dynamic>;
-  //       return AmountModel(
-  //           desc: value["desc"],
-  //           amount: value["amount"],
-  //           type: value["type"] == "income"
-  //               ? TransType.income
-  //               : TransType.outcome);
-  //     },
-  //     onError: (e) => print("Error getting document: $e"),
-  //   );
-
-  //   print(data);
-  //   // final data = myBox.keys.map((key) {
-  //   //   final value = myBox.get(key);
-  //   //   return AmountModel(
-  //   //       desc: value["desc"],
-  //   //       amount: value["amount"],
-  //   //       type:
-  //   //           value["type"] == "income" ? TransType.income : TransType.outcome);
-  //   // }).toList();
-
-  //   // myList = data;
-  //   setState(() {});
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -97,17 +64,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     "desc": value.desc,
                                                     "amount": value.amount
                                                   });
-                                                  // myList[index] = value;
-                                                  // setState(() {});
-
-                                                  // await myBox.putAt(index, {
-                                                  //   "type": value.type == TransType.income
-                                                  //       ? "income"
-                                                  //       : "outcome",
-                                                  //   "desc": value.desc,
-                                                  //   "amount": value.amount
-                                                  // });
-                                                  // getDataFromHive();
                                                 } else {
                                                   ScaffoldMessenger.of(context).showSnackBar(
                                                     const SnackBar(
@@ -127,11 +83,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                     },
                                     onDelete: () {
                                       walletDB.doc(snapshot.data!.docs[index].id).delete();
-                                      // myList.removeAt(index);
-                                      // setState(() {});
-
-                                      // myBox.deleteAt(index);
-                                      // getDataFromHive();
                                     },
                                   );
                                 }),
@@ -167,19 +118,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             "desc": value.desc,
                             "amount": value.amount
                           });
-
-                          // myList.add(value);
-                          // setState(() {});
-
-                          // await myBox.add({
-                          //   "type": value.type == TransType.income
-                          //       ? "income"
-                          //       : "outcome",
-                          //   "desc": value.desc,
-                          //   "amount": value.amount
-                          // });
-
-                          // getDataFromHive();
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
