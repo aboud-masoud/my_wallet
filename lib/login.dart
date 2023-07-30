@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_wallet/home.dart';
+import 'package:my_wallet/register.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -10,7 +11,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -29,8 +30,8 @@ class _LoginScreenState extends State<LoginScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16),
                 child: TextField(
-                  decoration: const InputDecoration(hintText: "username"),
-                  controller: usernameController,
+                  decoration: const InputDecoration(hintText: "email"),
+                  controller: emailController,
                 ),
               ),
               Padding(
@@ -47,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   User? user;
                   try {
                     user = (await auth.signInWithEmailAndPassword(
-                      email: usernameController.text,
+                      email: emailController.text,
                       password: passwordController.text,
                     ))
                         .user;
@@ -61,7 +62,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   if (user != null) {
                     Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: ((context) => const HomeScreen())), (route) => false);
+                        MaterialPageRoute(
+                            builder: ((context) => HomeScreen(
+                                  email: emailController.text,
+                                ))),
+                        (route) => false);
                   }
                   // if (usernameController.text == "abed" && passwordController.text == "123") {
                   //   Navigator.of(context).pushAndRemoveUntil(
@@ -74,7 +79,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   //   );
                   // }
                 },
-              )
+              ),
+              const SizedBox(height: 20),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: ((context) => const RegisterScreen())));
+                  },
+                  child: const Text("Create new account")),
             ],
           ),
         ),
