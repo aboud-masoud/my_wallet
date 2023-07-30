@@ -62,77 +62,82 @@ class _HomeScreenState extends State<HomeScreen> {
         body: StreamBuilder(
             stream: walletDB.snapshots(),
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              return Column(
-                children: [
-                  HeaderView(
-                    youHave: calculateTotalAmount(snapshot.data!.docs),
-                    income: claculateIncome(snapshot.data!.docs),
-                    outcome: claculateOutcome(snapshot.data!.docs),
-                  ),
-                  Flexible(
-                    child: ListView.builder(
-                        reverse: true,
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (ctx, index) {
-                          return ListCell(
-                            type: snapshot.data!.docs[index]["type"] == "income" ? TransType.income : TransType.outcome,
-                            desc: snapshot.data!.docs[index]["desc"],
-                            amount: double.tryParse(snapshot.data!.docs[index]["amount"].toString()) ?? 0,
-                            onEdit: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  builder: (context) {
-                                    return AddEditRecord(
-                                      onAdd: (value) async {
-                                        if (value.amount > 0 && value.desc.isNotEmpty) {
-                                          walletDB.doc(snapshot.data!.docs[index].id).update({
-                                            "type": value.type == TransType.income ? "income" : "outcome",
-                                            "desc": value.desc,
-                                            "amount": value.amount
-                                          });
-                                          // myList[index] = value;
-                                          // setState(() {});
+              if (snapshot.hasData) {
+                return Column(
+                  children: [
+                    HeaderView(
+                      youHave: calculateTotalAmount(snapshot.data!.docs),
+                      income: claculateIncome(snapshot.data!.docs),
+                      outcome: claculateOutcome(snapshot.data!.docs),
+                    ),
+                    Flexible(
+                      child: ListView.builder(
+                          reverse: true,
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (ctx, index) {
+                            return ListCell(
+                              type:
+                                  snapshot.data!.docs[index]["type"] == "income" ? TransType.income : TransType.outcome,
+                              desc: snapshot.data!.docs[index]["desc"],
+                              amount: double.tryParse(snapshot.data!.docs[index]["amount"].toString()) ?? 0,
+                              onEdit: () {
+                                showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    builder: (context) {
+                                      return AddEditRecord(
+                                        onAdd: (value) async {
+                                          if (value.amount > 0 && value.desc.isNotEmpty) {
+                                            walletDB.doc(snapshot.data!.docs[index].id).update({
+                                              "type": value.type == TransType.income ? "income" : "outcome",
+                                              "desc": value.desc,
+                                              "amount": value.amount
+                                            });
+                                            // myList[index] = value;
+                                            // setState(() {});
 
-                                          // await myBox.putAt(index, {
-                                          //   "type": value.type == TransType.income
-                                          //       ? "income"
-                                          //       : "outcome",
-                                          //   "desc": value.desc,
-                                          //   "amount": value.amount
-                                          // });
-                                          // getDataFromHive();
-                                        } else {
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
-                                              content:
-                                                  Text("Amount should be more than Zereooo and Desc should be filled"),
-                                            ),
-                                          );
-                                        }
-                                      },
-                                      amount: snapshot.data!.docs[index]["amount"],
-                                      desc: snapshot.data!.docs[index]["desc"],
-                                      type: snapshot.data!.docs[index]["type"] == "income"
-                                          ? TransType.income
-                                          : TransType.outcome,
-                                    );
-                                  });
-                            },
-                            onDelete: () {
-                              walletDB.doc(snapshot.data!.docs[index].id).delete();
-                              // myList.removeAt(index);
-                              // setState(() {});
+                                            // await myBox.putAt(index, {
+                                            //   "type": value.type == TransType.income
+                                            //       ? "income"
+                                            //       : "outcome",
+                                            //   "desc": value.desc,
+                                            //   "amount": value.amount
+                                            // });
+                                            // getDataFromHive();
+                                          } else {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                    "Amount should be more than Zereooo and Desc should be filled"),
+                                              ),
+                                            );
+                                          }
+                                        },
+                                        amount: snapshot.data!.docs[index]["amount"],
+                                        desc: snapshot.data!.docs[index]["desc"],
+                                        type: snapshot.data!.docs[index]["type"] == "income"
+                                            ? TransType.income
+                                            : TransType.outcome,
+                                      );
+                                    });
+                              },
+                              onDelete: () {
+                                walletDB.doc(snapshot.data!.docs[index].id).delete();
+                                // myList.removeAt(index);
+                                // setState(() {});
 
-                              // myBox.deleteAt(index);
-                              // getDataFromHive();
-                            },
-                          );
-                        }),
-                  ),
-                  const SizedBox(height: 40)
-                ],
-              );
+                                // myBox.deleteAt(index);
+                                // getDataFromHive();
+                              },
+                            );
+                          }),
+                    ),
+                    const SizedBox(height: 40)
+                  ],
+                );
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
             }),
         floatingActionButton: ElevatedButton(
             onPressed: () {

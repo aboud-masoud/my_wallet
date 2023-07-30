@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_wallet/home.dart';
 
@@ -11,6 +12,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -40,17 +43,36 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 50),
               ElevatedButton(
                 child: const Text("Login"),
-                onPressed: () {
-                  if (usernameController.text == "abed" && passwordController.text == "123") {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: ((context) => const HomeScreen())), (route) => false);
-                  } else {
+                onPressed: () async {
+                  User? user;
+                  try {
+                    user = (await auth.signInWithEmailAndPassword(
+                      email: usernameController.text,
+                      password: passwordController.text,
+                    ))
+                        .user;
+                  } catch (error) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Wrong username or password"),
+                      SnackBar(
+                        content: Text(error.toString()),
                       ),
                     );
                   }
+
+                  if (user != null) {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: ((context) => const HomeScreen())), (route) => false);
+                  }
+                  // if (usernameController.text == "abed" && passwordController.text == "123") {
+                  //   Navigator.of(context).pushAndRemoveUntil(
+                  //       MaterialPageRoute(builder: ((context) => const HomeScreen())), (route) => false);
+                  // } else {
+                  //   ScaffoldMessenger.of(context).showSnackBar(
+                  //     const SnackBar(
+                  //       content: Text("Wrong username or password"),
+                  //     ),
+                  //   );
+                  // }
                 },
               )
             ],
