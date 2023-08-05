@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:my_wallet/change_profile_image.dart';
 
 import 'package:my_wallet/small_widgets/add_edit_record.dart';
 import 'package:my_wallet/small_widgets/header_view.dart';
@@ -32,6 +33,18 @@ class _HomeScreenState extends State<HomeScreen> {
           return Scaffold(
               appBar: AppBar(
                 title: const Text("Home Screen"),
+                actions: [
+                  IconButton(
+                      icon: const Icon(Icons.person),
+                      onPressed: () {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (context) {
+                          return ChangeProfileImageScreen(
+                            email: widget.email,
+                          );
+                        }));
+                      }),
+                ],
               ),
               body: snapshot.hasData
                   ? Column(
