@@ -42,7 +42,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16),
                 child: TextField(
-                  decoration: const InputDecoration(hintText: "confirm password"),
+                  decoration:
+                      const InputDecoration(hintText: "confirm password"),
                   controller: confirmPasswordController,
                 ),
               ),
@@ -53,24 +54,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   if (emailController.text.isNotEmpty &&
                       passwordController.text.isNotEmpty &&
                       confirmPasswordController.text.isNotEmpty) {
-                    if (passwordController.text == confirmPasswordController.text) {
+                    if (passwordController.text ==
+                        confirmPasswordController.text) {
                       if (passwordController.text.length < 6) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("password must be more than 6 digit")),
+                          const SnackBar(
+                              content:
+                                  Text("password must be more than 6 digit")),
                         );
                       } else {
-                        await auth.createUserWithEmailAndPassword(
-                            email: emailController.text, password: passwordController.text);
-                        Navigator.pop(context);
+                        try {
+                          await auth.createUserWithEmailAndPassword(
+                              email: emailController.text,
+                              password: passwordController.text);
+                          Navigator.pop(context);
+                        } catch (error) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(error.toString()),
+                            ),
+                          );
+                        }
                       }
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("password not equil confirm password")),
+                        const SnackBar(
+                            content:
+                                Text("password not equil confirm password")),
                       );
                     }
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("You must fill all of the fields")),
+                      const SnackBar(
+                          content: Text("You must fill all of the fields")),
                     );
                   }
                 },
